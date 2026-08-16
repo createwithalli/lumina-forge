@@ -9,7 +9,6 @@ export default function App() {
 
   return (
     <div className="relative w-full h-full bg-black">
-      {/* 3D Canvas — adaptive based on GPU tier for immersion on any device */}
       <Canvas
         dpr={[1, tier >= 2 ? 2 : 1.5]}
         camera={{ position: [0, 0, 8], fov: 45 }}
@@ -20,13 +19,12 @@ export default function App() {
           stencil: false,
           depth: true
         }}
+        style={{ touchAction: 'none' }}
       >
         <Suspense fallback={null}>
           <Scene tier={tier} isMobile={isMobile} />
         </Suspense>
       </Canvas>
-
-      {/* Luxury glassmorphism UI Overlay */}
       <Overlay />
     </div>
   )
