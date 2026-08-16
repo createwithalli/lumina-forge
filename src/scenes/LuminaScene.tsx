@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { useRef } from 'react'
 import * as THREE from 'three'
 import FluidEmergentSystem from '../systems/FluidEmergentSystem'
+import GPGPUFluidSystem from '../systems/GPGPUFluidSystem'
 
 interface Props {
   tier: number
@@ -10,8 +11,9 @@ interface Props {
 }
 
 /**
- * LuminaScene — calm luxury crystal + full dual-layer fluid emergent system.
- * Mouse interactive + Gemini force-field ready.
+ * LuminaScene — calm luxury crystal + adaptive fluid emergent systems.
+ * - High-end (tier >= 3): GPGPU 65k+ particle fluid (compute-style FBO)
+ * - Mid / low: dual-layer CPU fluid with mouse + Gemini forces
  */
 export default function LuminaScene({ tier, isMobile }: Props) {
   const group = useRef<THREE.Group>(null)
@@ -24,6 +26,7 @@ export default function LuminaScene({ tier, isMobile }: Props) {
   })
 
   const highQuality = tier >= 2 && !isMobile
+  const ultra = tier >= 3 && !isMobile
 
   return (
     <>
@@ -37,19 +40,29 @@ export default function LuminaScene({ tier, isMobile }: Props) {
 
       <Stars radius={100} depth={60} count={highQuality ? 2200 : 450} factor={2.5} saturation={0} fade speed={0.22} />
 
-      {/* FULL dual-layer fluid + particle emergent system (mouse + force fields) */}
-      <FluidEmergentSystem
-        count={highQuality ? 1200 : 240}
-        fineCount={highQuality ? 700 : 0}
-        attraction={0.0006}
-        fluidStrength={0.01}
-        flowSpeed={0.28}
-        mouseStrength={0.02}
-        enabled={true}
-        color="#d4af37"
-        colorHot="#f8f0d8"
-        fineColor="#e8d5a3"
-      />
+      {/* Adaptive fluid systems */}
+      {ultra ? (
+        <GPGPUFluidSystem
+          size={256}
+          fluidStrength={0.0105}
+          attraction={0.00065}
+          mouseStrength={0.02}
+          enabled={true}
+        />
+      ) : (
+        <FluidEmergentSystem
+          count={highQuality ? 1200 : 240}
+          fineCount={highQuality ? 700 : 0}
+          attraction={0.0006}
+          fluidStrength={0.01}
+          flowSpeed={0.28}
+          mouseStrength={0.02}
+          enabled={true}
+          color="#d4af37"
+          colorHot="#f8f0d8"
+          fineColor="#e8d5a3"
+        />
+      )}
 
       <group ref={group}>
         <Float speed={0.95} rotationIntensity={0.1} floatIntensity={0.28}>

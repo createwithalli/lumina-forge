@@ -9,7 +9,7 @@ Built for the next generation of spatial computing on the web — elegant, not b
 
 ---
 
-## Status: Full Stack + Full Fluid Emergent System (v2)
+## Status: Full Stack + Full Fluid Emergent System (v2) + GPGPU
 
 - Tailwind CSS v4 (`@tailwindcss/vite`)
 - React 19 + Vite 6 + TypeScript
@@ -23,6 +23,7 @@ Built for the next generation of spatial computing on the web — elegant, not b
   - Fine secondary particle layer
   - Adaptive high counts on high-end GPUs
   - Velocity color + soft glow + breathing
+- **GPGPU path (tier ≥ 3)**: 65 536 – 262 144 particles via FBO ping-pong compute shaders
 - Zustand store + live force injection
 - Glassmorphism UI with interactive controls
 
@@ -48,7 +49,14 @@ Vast negative space. Soft volumetric light. Emergent flow that feels alive but n
 
 ## Full Particle + Fluid Emergent System
 
-`src/systems/FluidEmergentSystem.tsx`
+### Adaptive architecture
+- **High-end GPUs (tier ≥ 3)**: `GPGPUFluidSystem` — pure GPU FBO ping-pong compute style, **65 536 particles** (size=256) or 262k (size=512)
+- **Mid / low**: `FluidEmergentSystem` dual-layer CPU with mouse + Gemini force fields
+
+Both share the same calm luxury look, mouse interaction, and force-field API.
+
+
+`src/systems/FluidEmergentSystem.tsx` + `src/systems/GPGPUFluidSystem.tsx`
 
 | Feature | Description |
 |---------|-------------|
@@ -56,8 +64,8 @@ Vast negative space. Soft volumetric light. Emergent flow that feels alive but n
 | Crystal orbit | Soft attract + repel for elegant gathering |
 | Mouse interaction | Real-time soft force field from pointer |
 | Gemini / Store | Inject attract / repel / vortex force fields |
-| Dual layer | Main fluid + fine secondary particles |
-| Adaptive | 160–1200+ particles based on GPU tier + mobile |
+| Dual layer / GPGPU | Main fluid + fine secondary particles / 65k+ GPU |
+| Adaptive | 160–262k particles based on GPU tier + mobile |
 | Calm luxury | Heavy damping, soft additive glow, velocity tint |
 
 This is the heart of the “emergent style flow”.
@@ -72,7 +80,7 @@ This is the heart of the “emergent style flow”.
 - motion
 - @google/genai (Gemini)
 - zustand
-- maath + custom curl noise
+- maath + custom curl noise + GPGPU FBO shaders
 
 ---
 
