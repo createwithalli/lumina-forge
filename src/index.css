@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --lumina-gold: #d4af37;
+  --lumina-platinum: #e5e4e2;
+  --lumina-void: #050505;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--lumina-void);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Glassmorphism luxury */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
