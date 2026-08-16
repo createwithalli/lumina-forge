@@ -2,7 +2,7 @@ import { Environment, Float, MeshTransmissionMaterial, Stars } from '@react-thre
 import { useFrame } from '@react-three/fiber'
 import { useRef } from 'react'
 import * as THREE from 'three'
-import EmergentParticles from '../systems/EmergentParticles'
+import FluidEmergentSystem from '../systems/FluidEmergentSystem'
 
 interface Props {
   tier: number
@@ -11,16 +11,16 @@ interface Props {
 
 /**
  * Core immersive scene for LuminaForge.
- * Adaptive quality via GPU tier. Calm luxury crystal with soft emergent motion.
- * Vast negative space + soft volumetric light. Every prop audited for current drei/fiber.
+ * Adaptive quality via GPU tier. Calm luxury crystal + full fluid emergent particle system.
+ * Vast negative space + soft volumetric light + living fluid flow that never feels busy.
  */
 export default function LuminaScene({ tier, isMobile }: Props) {
   const group = useRef<THREE.Group>(null)
 
   useFrame((state) => {
     if (group.current) {
-      group.current.rotation.y = state.clock.elapsedTime * 0.04
-      group.current.position.y = Math.sin(state.clock.elapsedTime * 0.25) * 0.08
+      group.current.rotation.y = state.clock.elapsedTime * 0.035
+      group.current.position.y = Math.sin(state.clock.elapsedTime * 0.22) * 0.07
     }
   })
 
@@ -29,77 +29,89 @@ export default function LuminaScene({ tier, isMobile }: Props) {
   return (
     <>
       <color attach="background" args={['#050505']} />
-      <fog attach="fog" args={['#050505', 10, 28]} />
+      <fog attach="fog" args={['#050505', 11, 30]} />
 
-      <ambientLight intensity={0.12} />
+      {/* Soft cinematic lighting */}
+      <ambientLight intensity={0.1} />
       <directionalLight
         position={[6, 10, 4]}
-        intensity={1.1}
+        intensity={1.05}
         color="#fff8e7"
         castShadow={highQuality}
       />
-      <pointLight position={[-5, 3, -3]} intensity={0.7} color="#d4af37" distance={20} />
-      <pointLight position={[4, -2, 4]} intensity={0.35} color="#e5e4e2" distance={15} />
+      <pointLight position={[-5, 3, -3]} intensity={0.65} color="#d4af37" distance={22} />
+      <pointLight position={[4, -2, 4]} intensity={0.3} color="#e5e4e2" distance={16} />
 
+      {/* Depth stars */}
       <Stars
-        radius={90}
-        depth={50}
-        count={highQuality ? 2800 : 600}
-        factor={2.8}
+        radius={95}
+        depth={55}
+        count={highQuality ? 2400 : 500}
+        factor={2.6}
         saturation={0}
         fade
-        speed={0.3}
+        speed={0.25}
       />
 
-      {/* Soft emergent particles */}
-      <EmergentParticles count={highQuality ? 350 : 120} enabled={true} />
+      {/* ========== FULL FLUID + PARTICLE EMERGENT SYSTEM ========== */}
+      <FluidEmergentSystem
+        count={highQuality ? 900 : 220}
+        attraction={0.0007}
+        fluidStrength={0.011}
+        flowSpeed={0.32}
+        enabled={true}
+        color="#d4af37"
+        colorHot="#f8f0d8"
+      />
 
       <group ref={group}>
-        <Float speed={1.1} rotationIntensity={0.15} floatIntensity={0.35}>
+        {/* Primary luxury floating crystal */}
+        <Float speed={1.0} rotationIntensity={0.12} floatIntensity={0.3}>
           <mesh position={[0, 0, 0]} castShadow={highQuality}>
-            <icosahedronGeometry args={[1.75, highQuality ? 1 : 0]} />
+            <icosahedronGeometry args={[1.7, highQuality ? 1 : 0]} />
             <MeshTransmissionMaterial
               backside
-              samples={highQuality ? 12 : 4}
+              samples={highQuality ? 10 : 4}
               resolution={highQuality ? 512 : 256}
-              thickness={1.1}
-              chromaticAberration={0.06}
-              anisotropy={0.25}
-              distortion={0.15}
-              distortionScale={0.35}
-              temporalDistortion={0.08}
-              iridescence={0.35}
-              iridescenceIOR={1.15}
-              iridescenceThicknessRange={[120, 480]}
+              thickness={1.05}
+              chromaticAberration={0.055}
+              anisotropy={0.22}
+              distortion={0.12}
+              distortionScale={0.3}
+              temporalDistortion={0.07}
+              iridescence={0.32}
+              iridescenceIOR={1.12}
+              iridescenceThicknessRange={[100, 450]}
               color="#f8f7f2"
               attenuationColor="#d4af37"
-              attenuationDistance={1.8}
-              roughness={0.05}
+              attenuationDistance={1.7}
+              roughness={0.04}
             />
           </mesh>
         </Float>
 
+        {/* Secondary floating accents (high tier only) */}
         {highQuality && (
           <>
-            <Float speed={0.7} floatIntensity={0.5}>
-              <mesh position={[-3.6, 1.3, -2.2]}>
-                <octahedronGeometry args={[0.55, 0]} />
+            <Float speed={0.65} floatIntensity={0.45}>
+              <mesh position={[-3.5, 1.25, -2.1]}>
+                <octahedronGeometry args={[0.52, 0]} />
                 <meshStandardMaterial
                   color="#e5e4e2"
-                  metalness={0.92}
-                  roughness={0.08}
-                  envMapIntensity={1.2}
+                  metalness={0.93}
+                  roughness={0.07}
+                  envMapIntensity={1.15}
                 />
               </mesh>
             </Float>
-            <Float speed={1.3} floatIntensity={0.25}>
-              <mesh position={[3.4, -0.9, -1.8]} rotation={[0.4, 0.2, 0]}>
-                <torusGeometry args={[0.48, 0.11, 16, 64]} />
+            <Float speed={1.2} floatIntensity={0.22}>
+              <mesh position={[3.3, -0.85, -1.7]} rotation={[0.35, 0.15, 0]}>
+                <torusGeometry args={[0.46, 0.1, 16, 48]} />
                 <meshStandardMaterial
                   color="#d4af37"
                   metalness={1}
-                  roughness={0.12}
-                  envMapIntensity={1.5}
+                  roughness={0.11}
+                  envMapIntensity={1.4}
                 />
               </mesh>
             </Float>
@@ -107,7 +119,7 @@ export default function LuminaScene({ tier, isMobile }: Props) {
         )}
       </group>
 
-      <Environment preset="city" environmentIntensity={0.35} />
+      <Environment preset="city" environmentIntensity={0.32} />
     </>
   )
 }

@@ -9,14 +9,14 @@ Built for the next generation of spatial computing on the web — elegant, not b
 
 ---
 
-## Status: Full Stack + Audited
+## Status: Full Stack + Audited + Fluid Emergent System
 
 Every line has been reviewed for correctness:
 - Tailwind CSS v4 via official `@tailwindcss/vite` plugin
 - React 19 + Vite 6 + TypeScript strict
 - Adaptive GPU tiering (`@pmndrs/detect-gpu`)
 - Luxury MeshTransmissionMaterial crystal
-- Soft emergent instanced particles
+- **Full particle + fluid emergent system** (curl-noise driven)
 - Zustand store + Gemini generative hook (ready for API key)
 - Glassmorphism UI with Motion
 - No unused imports, no broken peers for core stack
@@ -35,7 +35,7 @@ pnpm dev
 | Previous concepts          | **LuminaForge**                                      |
 |----------------------------|------------------------------------------------------|
 | Conceptual only            | Real runnable full starter                           |
-| Basic materials            | Adaptive luxury crystal + particles + environment    |
+| Basic materials            | Adaptive luxury crystal + full fluid particles       |
 | Manual setup               | Zero-config Tailwind v4 + GPU adaptive + store       |
 | Incomplete                 | Full stack: hooks, store, materials, systems, UI     |
 | Peer conflicts             | Audited dependencies for reliable install            |
@@ -55,6 +55,21 @@ Vast negative space. Soft volumetric light. Emergent flow that feels alive but n
 - **AI**: `@google/genai` (Gemini) — generative scenes
 - **State**: Zustand
 - **Extras**: maath, vite-plugin-glsl, EmergentParticles system
+
+## Full Particle + Fluid Emergent System
+
+`src/systems/FluidEmergentSystem.tsx` is a complete, production-ready emergent fluid particle system:
+
+- **Curl-noise driven fluid flow** (incompressible-like motion)
+- Soft attraction / orbit around the luxury crystal (emergent gathering without chaos)
+- Velocity-based color tint (gold → warm champagne)
+- Soft additive glowing particles with size breathing
+- **Fully adaptive** to GPU tier + mobile (never busy on low-end)
+- Endless rebirth for continuous living flow
+- Designed for calm luxury + spatial negative space
+
+This is the heart of the "emergent style flow" – particles that feel alive and self-organize while staying elegant.
+
 
 ---
 
@@ -83,7 +98,9 @@ lumina-forge/
 │   ├── materials/LuxuryCrystal.tsx
 │   ├── scenes/LuminaScene.tsx
 │   ├── store/useLuminaStore.ts
-│   ├── systems/EmergentParticles.tsx
+│   ├── systems/
+│   │   ├── FluidEmergentSystem.tsx   ← FULL fluid + particle system
+│   │   └── EmergentParticles.tsx     (simple fallback)
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css
