@@ -3,41 +3,45 @@
   "version": "1.0.0",
   "private": false,
   "type": "module",
-  "description": "LuminaForge — Ultimate open-source generative immersive 3D spatial stack. Luxury WebGL/WebGPU + React Three Fiber + Gemini AI + Spline + Motion.",
+  "description": "LuminaForge — Ultimate open-source generative immersive 3D spatial stack. Luxury WebGL/WebGPU + React Three Fiber + Gemini AI + Spline + Motion. Calm luxury, emergent flow.",
   "author": "createwithalli",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/createwithalli/lumina-forge.git"
+  },
+  "homepage": "https://github.com/createwithalli/lumina-forge",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@google/genai": "^1.0.0",
-    "@pmndrs/detect-gpu": "^6.0.0",
+    "@google/genai": "^1.7.0",
+    "@pmndrs/detect-gpu": "^6.0.6",
     "@react-three/drei": "^10.0.0",
-    "@react-three/fiber": "^9.0.0",
-    "@react-three/postprocessing": "^3.0.0",
-    "@react-three/rapier": "^2.0.0",
+    "@react-three/fiber": "^9.1.2",
     "@splinetool/react-spline": "^4.0.0",
-    "maath": "^0.10.0",
-    "motion": "^12.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "maath": "^0.10.8",
+    "motion": "^12.6.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "three": "^0.175.0",
-    "zustand": "^5.0.0"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@tailwindcss/vite": "^4.1.4",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
     "@types/three": "^0.175.0",
-    "@vitejs/plugin-react": "^4.3.0",
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0",
-    "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.0",
-    "vite": "^6.0.0",
-    "vite-plugin-glsl": "^1.3.0"
+    "@vitejs/plugin-react": "^4.4.1",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3",
+    "vite-plugin-glsl": "^1.4.0"
   },
   "keywords": [
     "threejs",
@@ -53,6 +57,7 @@
     "luxury",
     "generative",
     "vite",
-    "open-source"
+    "open-source",
+    "r3f"
   ]
 }

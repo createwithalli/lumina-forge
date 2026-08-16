@@ -2,81 +2,112 @@ import { Environment, Float, MeshTransmissionMaterial, Stars } from '@react-thre
 import { useFrame } from '@react-three/fiber'
 import { useRef } from 'react'
 import * as THREE from 'three'
+import EmergentParticles from '../systems/EmergentParticles'
 
 interface Props {
   tier: number
   isMobile: boolean
 }
 
+/**
+ * Core immersive scene for LuminaForge.
+ * Adaptive quality via GPU tier. Calm luxury crystal with soft emergent motion.
+ * Vast negative space + soft volumetric light. Every prop audited for current drei/fiber.
+ */
 export default function LuminaScene({ tier, isMobile }: Props) {
   const group = useRef<THREE.Group>(null)
 
   useFrame((state) => {
     if (group.current) {
-      group.current.rotation.y = state.clock.elapsedTime * 0.05
-      group.current.position.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1
+      group.current.rotation.y = state.clock.elapsedTime * 0.04
+      group.current.position.y = Math.sin(state.clock.elapsedTime * 0.25) * 0.08
     }
   })
+
+  const highQuality = tier >= 2 && !isMobile
 
   return (
     <>
       <color attach="background" args={['#050505']} />
-      <fog attach="fog" args={['#050505', 8, 25]} />
+      <fog attach="fog" args={['#050505', 10, 28]} />
 
-      {/* Soft volumetric lighting */}
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[5, 8, 5]} intensity={1.2} color="#fff8e7" castShadow={tier >= 2} />
-      <pointLight position={[-4, 2, -4]} intensity={0.8} color="#d4af37" />
-      <pointLight position={[4, -1, 3]} intensity={0.4} color="#e5e4e2" />
+      <ambientLight intensity={0.12} />
+      <directionalLight
+        position={[6, 10, 4]}
+        intensity={1.1}
+        color="#fff8e7"
+        castShadow={highQuality}
+      />
+      <pointLight position={[-5, 3, -3]} intensity={0.7} color="#d4af37" distance={20} />
+      <pointLight position={[4, -2, 4]} intensity={0.35} color="#e5e4e2" distance={15} />
 
-      {/* Stars for depth — reduced on low tier */}
-      <Stars radius={80} depth={40} count={tier >= 2 ? 3000 : 800} factor={3} saturation={0} fade speed={0.4} />
+      <Stars
+        radius={90}
+        depth={50}
+        count={highQuality ? 2800 : 600}
+        factor={2.8}
+        saturation={0}
+        fade
+        speed={0.3}
+      />
+
+      {/* Soft emergent particles */}
+      <EmergentParticles count={highQuality ? 350 : 120} enabled={true} />
 
       <group ref={group}>
-        {/* Luxury floating crystal architecture */}
-        <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.4}>
-          <mesh position={[0, 0, 0]} castShadow>
-            <icosahedronGeometry args={[1.8, 1]} />
+        <Float speed={1.1} rotationIntensity={0.15} floatIntensity={0.35}>
+          <mesh position={[0, 0, 0]} castShadow={highQuality}>
+            <icosahedronGeometry args={[1.75, highQuality ? 1 : 0]} />
             <MeshTransmissionMaterial
               backside
-              samples={tier >= 2 ? 16 : 6}
-              thickness={1.2}
-              chromaticAberration={0.08}
-              anisotropy={0.3}
-              distortion={0.2}
-              distortionScale={0.4}
-              temporalDistortion={0.1}
-              iridescence={0.4}
-              iridescenceIOR={1.2}
-              iridescenceThicknessRange={[100, 600]}
-              color="#f5f5f0"
+              samples={highQuality ? 12 : 4}
+              resolution={highQuality ? 512 : 256}
+              thickness={1.1}
+              chromaticAberration={0.06}
+              anisotropy={0.25}
+              distortion={0.15}
+              distortionScale={0.35}
+              temporalDistortion={0.08}
+              iridescence={0.35}
+              iridescenceIOR={1.15}
+              iridescenceThicknessRange={[120, 480]}
+              color="#f8f7f2"
               attenuationColor="#d4af37"
-              attenuationDistance={2}
+              attenuationDistance={1.8}
+              roughness={0.05}
             />
           </mesh>
         </Float>
 
-        {/* Secondary floating elements for spatial luxury */}
-        {!isMobile && (
+        {highQuality && (
           <>
-            <Float speed={0.8} floatIntensity={0.6}>
-              <mesh position={[-3.5, 1.2, -2]}>
-                <octahedronGeometry args={[0.6, 0]} />
-                <meshStandardMaterial color="#e5e4e2" metalness={0.9} roughness={0.1} />
+            <Float speed={0.7} floatIntensity={0.5}>
+              <mesh position={[-3.6, 1.3, -2.2]}>
+                <octahedronGeometry args={[0.55, 0]} />
+                <meshStandardMaterial
+                  color="#e5e4e2"
+                  metalness={0.92}
+                  roughness={0.08}
+                  envMapIntensity={1.2}
+                />
               </mesh>
             </Float>
-            <Float speed={1.5} floatIntensity={0.3}>
-              <mesh position={[3.2, -0.8, -1.5]}>
-                <torusGeometry args={[0.5, 0.12, 16, 48]} />
-                <meshStandardMaterial color="#d4af37" metalness={1} roughness={0.15} />
+            <Float speed={1.3} floatIntensity={0.25}>
+              <mesh position={[3.4, -0.9, -1.8]} rotation={[0.4, 0.2, 0]}>
+                <torusGeometry args={[0.48, 0.11, 16, 64]} />
+                <meshStandardMaterial
+                  color="#d4af37"
+                  metalness={1}
+                  roughness={0.12}
+                  envMapIntensity={1.5}
+                />
               </mesh>
             </Float>
           </>
         )}
       </group>
 
-      {/* Environment for luxury reflections */}
-      <Environment preset="city" environmentIntensity={0.4} />
+      <Environment preset="city" environmentIntensity={0.35} />
     </>
   )
 }
